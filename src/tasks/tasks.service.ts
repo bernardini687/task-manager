@@ -47,7 +47,7 @@ export class TasksService {
     return this.findById(id);
   }
 
-  updateStatus(id: string, status: TaskStatus): Task {
+  updateStatus(id: string, status: TaskStatus): Task | never {
     const taskIndex = this.tasks.findIndex(task => task.id === id);
     if (taskIndex === -1) {
       throw new NotFoundException();
@@ -57,12 +57,12 @@ export class TasksService {
     return this.tasks[taskIndex];
   }
 
-  delete(id: string): void {
+  delete(id: string): void | never {
     const found = this.findById(id);
     this.tasks = this.tasks.filter(task => task.id !== found.id);
   }
 
-  private findById(id: string): Task {
+  private findById(id: string): Task | never {
     const found = this.tasks.find(task => task.id === id);
     if (!found) {
       throw new NotFoundException();
