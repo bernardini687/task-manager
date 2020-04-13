@@ -8,6 +8,19 @@ import { ReadFilterDto } from './dto/read-filter-dto';
 export class TasksService {
   private tasks: Task[] = [];
 
+  create(createTaskDto: CreateTaskDto): Task {
+    const { title, description } = createTaskDto;
+    const task: Task = {
+      id: uuid(),
+      title,
+      description,
+      status: TaskStatus.OPEN,
+    };
+    this.tasks.push(task);
+
+    return task;
+  }
+
   readAll(): Task[] {
     return this.tasks;
   }
@@ -32,19 +45,6 @@ export class TasksService {
 
   readOne(id: string): Task {
     return this.tasks.find(task => task?.id === id);
-  }
-
-  create(createTaskDto: CreateTaskDto): Task {
-    const { title, description } = createTaskDto;
-    const task: Task = {
-      id: uuid(),
-      title,
-      description,
-      status: TaskStatus.OPEN,
-    };
-    this.tasks.push(task);
-
-    return task;
   }
 
   updateStatus(id: string, status: TaskStatus): Task {

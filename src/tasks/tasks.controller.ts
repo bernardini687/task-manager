@@ -17,23 +17,23 @@ import { ReadFilterDto } from './dto/read-filter-dto';
 export class TasksController {
   constructor(private tasksService: TasksService) {}
 
+  @Post()
+  create(@Body() createTaskDto: CreateTaskDto): Task {
+    return this.tasksService.create(createTaskDto);
+  }
+
   @Get()
   read(@Query() filterDto: ReadFilterDto): Task[] {
-    if (Object.keys(filterDto).length) {
-      return this.tasksService.readFiltered(filterDto);
-    } else {
+    if (Object.keys(filterDto).length === 0) {
       return this.tasksService.readAll();
+    } else {
+      return this.tasksService.readFiltered(filterDto);
     }
   }
 
   @Get('/:id')
   readOne(@Param('id') id: string): Task {
     return this.tasksService.readOne(id);
-  }
-
-  @Post()
-  create(@Body() createTaskDto: CreateTaskDto): Task {
-    return this.tasksService.create(createTaskDto);
   }
 
   @Patch('/:id/status')
