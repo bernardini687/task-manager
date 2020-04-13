@@ -7,6 +7,8 @@ import {
   Delete,
   Patch,
   Query,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { Task, TaskStatus } from './task.entity';
@@ -18,6 +20,7 @@ export class TasksController {
   constructor(private tasksService: TasksService) {}
 
   @Post()
+  @UsePipes(ValidationPipe) // validates the body against the DTO.
   create(@Body() createTaskDto: CreateTaskDto): Task {
     return this.tasksService.create(createTaskDto);
   }
