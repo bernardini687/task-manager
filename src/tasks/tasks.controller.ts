@@ -7,7 +7,6 @@ import {
   Delete,
   Patch,
   Query,
-  UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
 import { TasksService } from './tasks.service';
@@ -21,13 +20,13 @@ export class TasksController {
   constructor(private tasksService: TasksService) {}
 
   @Post()
-  @UsePipes(ValidationPipe) // validates the body against the DTO.
-  create(@Body() createTaskDto: CreateTaskDto): Task {
+  // validates the body against the DTO.
+  create(@Body(ValidationPipe) createTaskDto: CreateTaskDto): Task {
     return this.tasksService.create(createTaskDto);
   }
 
   @Get()
-  read(@Query() filterDto: ReadFilterDto): Task[] {
+  read(@Query(ValidationPipe) filterDto: ReadFilterDto): Task[] {
     if (Object.keys(filterDto).length === 0) {
       return this.tasksService.readAll();
     } else {
