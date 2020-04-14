@@ -21,11 +21,11 @@ import { TaskStatus } from './task-status.enum';
 export class TasksController {
   constructor(private tasksService: TasksService) {}
 
-  // @Post()
-  // // validates the body against the DTO.
-  // create(@Body(ValidationPipe) createTaskDto: CreateTaskDto): Task {
-  //   return this.tasksService.create(createTaskDto);
-  // }
+  @Post()
+  // validates the body against the DTO.
+  create(@Body(ValidationPipe) createTaskDto: CreateTaskDto): Promise<Task> {
+    return this.tasksService.create(createTaskDto);
+  }
 
   // @Get()
   // read(@Query(ValidationPipe) filterDto: ReadFilterDto): Task[] {

@@ -13,20 +13,14 @@ export class TasksService {
     private taskRepo: TaskRepository
   ) {}
 
-  // create(createTaskDto: CreateTaskDto): Task {
-  //   const { title, description } = createTaskDto;
-  //   const task: Task = {
-  //     id: uuid(),
-  //     title,
-  //     description,
-  //     status: TaskStatus.OPEN,
-  //   };
-  //   this.tasks.push(task);
-  //   return task;
-  // }
+  async create(createTaskDto: CreateTaskDto): Promise<Task> {
+    return this.taskRepo.createTask(createTaskDto);
+  }
+
   // readAll(): Task[] {
   //   return this.tasks;
   // }
+
   // readFiltered(filterDto: ReadFilterDto): Task[] {
   //   const { status: statusFilter, search } = filterDto;
   //   let tasks = this.tasks;
@@ -55,6 +49,7 @@ export class TasksService {
   //   this.tasks[taskIndex].status = status;
   //   return this.tasks[taskIndex];
   // }
+
   // delete(id: string): void | never {
   //   const found = this.findById(id);
   //   this.tasks = this.tasks.filter(task => task.id !== found.id);
