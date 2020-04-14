@@ -8,6 +8,7 @@ import {
   Patch,
   Query,
   ValidationPipe,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { Task } from './task.entity';
@@ -35,10 +36,10 @@ export class TasksController {
   //   }
   // }
 
-  // @Get('/:id')
-  // readOne(@Param('id') id: string): Task {
-  //   return this.tasksService.readOne(id);
-  // }
+  @Get('/:id')
+  readOne(@Param('id', ParseIntPipe) id: number): Promise<Task> | never {
+    return this.tasksService.readOne(id);
+  }
 
   // @Patch('/:id/status')
   // updateStatus(
