@@ -14,52 +14,39 @@ export class TasksService {
   ) {}
 
   async create(createTaskDto: CreateTaskDto): Promise<Task> {
-    return this.taskRepo.createTask(createTaskDto);
+    const task: Task = this.taskRepo.create({
+      status: TaskStatus.OPEN,
+      ...createTaskDto,
+    });
+    return await this.taskRepo.save(task);
   }
 
-  // readAll(): Task[] {
-  //   return this.tasks;
-  // }
-
-  // readFiltered(filterDto: ReadFilterDto): Task[] {
-  //   const { status: statusFilter, search } = filterDto;
-  //   let tasks = this.tasks;
-  //   if (statusFilter) {
-  //     tasks = tasks.filter(({ status }) => status === statusFilter);
-  //   }
-  //   if (search) {
-  //     tasks = tasks.filter(task =>
-  //       [task.title, task.description].some(field =>
-  //         new RegExp(search, 'i').test(field)
-  //       )
-  //     );
-  //   }
-  //   return tasks;
-  // }
-
-  readOne(id: number): Promise<Task> | never {
-    return this.findById(id);
+  read(filterDto: ReadFilterDto) {
+    return this.taskRepo.readAllOrFilter(filterDto);
   }
 
-  // updateStatus(id: string, status: TaskStatus): Task | never {
-  //   const taskIndex = this.tasks.findIndex(task => task.id === id);
-  //   if (taskIndex === -1) {
-  //     throw new NotFoundException();
-  //   }
-  //   this.tasks[taskIndex].status = status;
-  //   return this.tasks[taskIndex];
-  // }
-
-  // delete(id: string): void | never {
-  //   const found = this.findById(id);
-  //   this.tasks = this.tasks.filter(task => task.id !== found.id);
-  // }
-
-  private async findById(id: number): Promise<Task> | never {
+  async readOne(id: number): Promise<Task> | never {
     const found = await this.taskRepo.findOne(id);
     if (!found) {
       throw new NotFoundException();
     }
     return found;
+  }
+
+  // TODO: more efficient way of doing this?
+  async updateStatus(id: number, status: TaskStatus): Promise<Task> | never {
+    const result = await this.taskRepo.update(id, { status });
+    if (result.affected === 0) {
+      throw new NotFoundException();
+    } else {
+      return this.readOne(id);
+    }
+  }
+
+  async delete(id: number): Promise<void> {
+    const result = await this.taskRepo.delete(id);
+    if (result.affected === 0) {
+      throw new NotFoundException();
+    }
   }
 }

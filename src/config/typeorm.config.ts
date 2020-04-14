@@ -8,5 +8,7 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
   password: 'asdf',
   database: 'taskmanager',
   entities: [__dirname + '/../**/*.entity.{js,ts}'],
+  // autoLoadEntities: true,
+  logging: ['query'],
   synchronize: true,
 };

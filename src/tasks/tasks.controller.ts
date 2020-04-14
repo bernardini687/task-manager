@@ -27,30 +27,26 @@ export class TasksController {
     return this.tasksService.create(createTaskDto);
   }
 
-  // @Get()
-  // read(@Query(ValidationPipe) filterDto: ReadFilterDto): Task[] {
-  //   if (Object.keys(filterDto).length === 0) {
-  //     return this.tasksService.readAll();
-  //   } else {
-  //     return this.tasksService.readFiltered(filterDto);
-  //   }
-  // }
+  @Get()
+  read(@Query(ValidationPipe) filterDto: ReadFilterDto) {
+    return this.tasksService.read(filterDto);
+  }
 
   @Get('/:id')
   readOne(@Param('id', ParseIntPipe) id: number): Promise<Task> | never {
     return this.tasksService.readOne(id);
   }
 
-  // @Patch('/:id/status')
-  // updateStatus(
-  //   @Param('id') id: string,
-  //   @Body('status', TaskStatusValidationPipe) status: TaskStatus
-  // ): Task {
-  //   return this.tasksService.updateStatus(id, status);
-  // }
+  @Patch('/:id/status')
+  updateStatus(
+    @Param('id', ParseIntPipe) id: number,
+    @Body('status', TaskStatusValidationPipe) status: TaskStatus
+  ): Promise<Task> | never {
+    return this.tasksService.updateStatus(id, status);
+  }
 
-  // @Delete('/:id')
-  // delete(@Param('id') id: string): void {
-  //   this.tasksService.delete(id);
-  // }
+  @Delete('/:id')
+  delete(@Param('id', ParseIntPipe) id: number): Promise<void> | never {
+    return this.tasksService.delete(id);
+  }
 }
