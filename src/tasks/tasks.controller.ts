@@ -10,7 +10,7 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { TasksService } from './tasks.service';
-import { Task, TaskStatus } from './task.entity';
+import { Task, TaskStatus } from './task.model';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { ReadFilterDto } from './dto/read-filter-dto';
 import { TaskStatusValidationPipe } from './pipes/task-status-validation.pipe';

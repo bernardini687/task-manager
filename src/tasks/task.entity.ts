@@ -1,12 +1,17 @@
-export interface Task {
-  id: string;
-  title: string;
-  description: string;
-  status: TaskStatus;
-}
+import { BaseEntity, Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { TaskStatus } from './task.model';
 
-export enum TaskStatus {
-  OPEN = 'OPEN',
-  IN_PROGRESS = 'IN_PROGRESS',
-  DONE = 'DONE',
+@Entity()
+export class Task extends BaseEntity {
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @Column()
+  title: string;
+
+  @Column('text')
+  description: string;
+
+  @Column()
+  status: TaskStatus;
 }

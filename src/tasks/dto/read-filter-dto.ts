@@ -1,4 +1,4 @@
-import { TaskStatus } from '../task.entity';
+import { TaskStatus } from '../task.model';
 import { IsOptional, IsIn, IsNotEmpty } from 'class-validator';
 
 export class ReadFilterDto {
