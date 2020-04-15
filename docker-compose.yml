@@ -12,6 +12,6 @@ services:
       # defaults to the value of user.
       - POSTGRES_DB=taskmanager
     ports:
-      - '5432:5432'
+      - '54321:5432'
 # try this out with:
 # psql -U postgres -h localhost -p 5432 <database>
