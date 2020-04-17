@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
-import { AppModule } from './../src/app.module';
+import { AppModule } from '../src/app.module';
 
-describe('AppController (e2e)', () => {
+describe('TasksController (e2e)', () => {
   let app: INestApplication;
 
   beforeEach(async () => {
@@ -15,10 +15,19 @@ describe('AppController (e2e)', () => {
     await app.init();
   });
 
-  it('/ (GET)', () => {
+  afterEach(() => app.close());
+
+  it.skip('/tasks (GET)', () => {
     return request(app.getHttpServer())
-      .get('/')
+      .get('/tasks')
       .expect(200)
-      .expect('Hello World!');
+      .expect([]);
+  });
+
+  it('/tasks (POST)', () => {
+    return request(app.getHttpServer())
+      .post('/tasks')
+      .send({ title: 'foo', description: 'foo' })
+      .expect(201);
   });
 });

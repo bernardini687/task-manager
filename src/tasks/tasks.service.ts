@@ -21,7 +21,7 @@ export class TasksService {
     return await this.taskRepo.save(task);
   }
 
-  read(filterDto: ReadFilterDto) {
+  async read(filterDto: ReadFilterDto) {
     return this.taskRepo.readAllOrFilter(filterDto);
   }
 
