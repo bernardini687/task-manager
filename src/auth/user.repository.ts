@@ -1,16 +1,23 @@
 import { Repository, EntityRepository } from 'typeorm';
 import { User } from './user.entity';
-import { AuthCredentialsDto } from './dto/auth-credentials.dto';
+import { SignupCredentialsDto } from './dto/signup-credentials.dto';
 import {
   InternalServerErrorException,
   ConflictException,
 } from '@nestjs/common/exceptions';
+import * as bcrypt from 'bcrypt';
+import { LoginCredentialsDto } from './dto/login-credentials.dto';
 
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
-  async signUp(dto: AuthCredentialsDto): Promise<void> {
+  async signup(dto: SignupCredentialsDto): Promise<void> {
     try {
-      await this.create(dto).save();
+      const salt = await bcrypt.genSalt();
+      dto = {
+        username: dto.username,
+        password: await bcrypt.hash(dto.password, salt),
+      };
+      await this.create({ salt, ...dto }).save();
     } catch (e) {
       // query failed error
       if (e.code === '23505') {
@@ -18,6 +25,15 @@ export class UserRepository extends Repository<User> {
       } else {
         throw new InternalServerErrorException();
       }
+    }
+  }
+
+  async validateUser(dto: LoginCredentialsDto): Promise<string> {
+    const user = await this.findOne({ username: dto.username });
+    if (user && (await user.validatePwd(dto.password))) {
+      return user.username;
+    } else {
+      return null;
     }
   }
 }
